@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#fff7e8" name="theme-color"/>
+<meta content="Для тебя кое-что пушистое! 🐸" name="description"/>
+<title>Тебя ждёт кое-что пушистое! 🐸</title>
+<style>
+    :root {
+      --paper: #fff8e9; --ink: #29211f; --muted:#76675e; --pink:#ff77b8; --hot:#f84ba6;
+      --lilac:#a783f8; --purple:#6e49df; --lime:#b9f46b; --green:#8dcf32;
+      --orange:#ff9a5a; --yellow:#ffdc61; --blue:#92cdfa; --line:#322720;
+      --rounded: "Arial Rounded MT Bold", "Trebuchet MS", Verdana, sans-serif;
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:var(--paper); font-family:var(--rounded); overflow-x:hidden; }
+    button,a { -webkit-tap-highlight-color:transparent; }
+    button { font:inherit; cursor:pointer; }
+    a { color:inherit; }
+    button:focus-visible, a:focus-visible { outline:4px solid var(--purple); outline-offset:5px; }
+    ::selection { background:var(--pink); color:var(--ink); }
+    .stage { isolation:isolate; position:relative; overflow:hidden; min-height: min(900px, 100svh); padding: 28px max(24px, calc((100vw - 1210px)/2)) 100px; background: radial-gradient(circle at 49% 0%,#fffef8 0,#fff8e9 59%,#fdf0df 100%); }
+    .stage::before { content:""; position:absolute; width:900px; height:900px; right:-360px; top:-410px; background:#ffe1ed; border-radius:50%; z-index:-2; }
+    .stage::after { content:""; position:absolute; width:560px; height:500px; left:-390px; bottom:-250px; background:#def4b4; border-radius:50%; z-index:-2; }
+    .speckle { pointer-events:none; position:absolute; inset:0; opacity:.52; z-index:-1; background-image: radial-gradient(#edbaab 1.25px,transparent 1.25px); background-size:33px 33px; mask-image: linear-gradient(90deg, transparent, black 10%,transparent 60%); }
+    .topbar { position:relative; z-index:9; display:flex; align-items:center; justify-content:space-between; gap:18px; max-width:1210px; margin:0 auto; }
+    .brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--ink); }
+    .brand-icon { width:44px; height:44px; transform:rotate(-9deg); border:2px solid var(--line); border-radius:15px; background:var(--yellow); display:grid; place-items:center; box-shadow:4px 4px 0 var(--line); }
+    .brand-icon svg { width:33px; }
+    .brand-title { font-size:23px; font-weight:1000; letter-spacing:-1.6px; text-transform:uppercase; white-space:nowrap; }
+    .brand-title span:nth-child(1) {color:#8dc956}.brand-title span:nth-child(2) {color:#fb9653}.brand-title span:nth-child(3) {color:#fc66b0}.brand-title span:nth-child(4) {color:#9061e7}.brand-title span:nth-child(5) {color:#48b9e5}.brand-title span:nth-child(6) {color:#f1bc24}
+    .top-note { display:flex; align-items:center; gap:9px; font-size:13px; font-weight:900; letter-spacing:.02em; border:2px dashed #f5a1c8; background:#fff8f5; border-radius:100px; padding:11px 16px; transform:rotate(2deg); }
+    .top-note i { font-style:normal; color:var(--hot); font-size:18px; }
+    .hero { position:relative; display:grid; grid-template-columns:1.08fr 1fr; align-items:center; gap:5px; max-width:1210px; margin: 70px auto 0; }
+    .hero-copy { z-index:3; padding:0 0 65px; }
+    .eyebrow { display:inline-flex; align-items:center; gap:12px; padding:11px 16px; margin-bottom:26px; border:2px solid var(--line); border-radius:30px; background:#d6f5ad; box-shadow:4px 4px 0 var(--line); transform:rotate(-2.2deg); font-size:13px; font-weight:1000; text-transform:uppercase; letter-spacing:.065em; }
+    .eyebrow .mini-star { font-size:19px; color:#ea6e48; line-height:0; }
+    h1 { margin:0; font-size:clamp(53px,6.2vw,89px); letter-spacing:-.072em; line-height:1.035; font-weight:1000; max-width:730px; }
+    h1 .highlight { display:inline-block; z-index:0; position:relative; white-space:nowrap; color:#e94e9e; transform:rotate(-2deg); }
+    h1 .highlight::after { content:""; position:absolute; background:#ffe16c; border-radius:50%; height:16px; bottom:5px; right:-2%; left:0; z-index:-1; transform:rotate(1deg); }
+    .hero-desc { max-width:545px; font-size:20px; line-height:1.55; color:#615248; font-weight:600; margin:28px 0 31px; }
+    .hero-desc strong { color:var(--ink); }
+    .primary-btn { display:inline-flex; justify-content:center; align-items:center; gap:13px; text-align:center; border:3px solid var(--line); border-radius:19px; color:#fff; background:#7753e8; padding:19px 27px; font-size:17px; font-weight:1000; box-shadow:7px 8px 0 var(--line); transition:transform .15s, box-shadow .15s, background .2s; }
+    .primary-btn:hover { transform:translate(3px,3px) rotate(-1deg); box-shadow:4px 5px 0 var(--line); background:#6541d9; }
+    .primary-btn:active {transform:translate(7px,8px);box-shadow:0 0 0 var(--line)}
+    .primary-btn .arrow { display:inline-block; font-size:24px; line-height:1; }
+    .little-instruction { font-size:13px; color:#968575; margin:22px 0 0 10px; font-weight:700; }
+    .scene { position:relative; min-width:0; height:550px; display:grid; place-items:center; }
+    .scene::before { content:""; position:absolute; border-radius:44% 56% 47% 53%; width:96%; height:91%; top:6%; left:1%; background:#d3c0ff; border:3px solid #6b55ad; transform:rotate(11deg); box-shadow:18px 20px 0 #eadfff; }
+    .scene::after { content:""; position:absolute; border-radius:50%; width:70%; height:10%; bottom:3%; left:20%; background:#9a78cb; opacity:.21; filter:blur(17px); }
+    .frog-btn { position:relative; z-index:2; padding:0; background:none; border:0; width:100%; max-width:560px; transform:rotate(-1.5deg); transition:transform .28s ease; cursor:pointer; }
+    .frog-btn:hover { transform:rotate(1deg) scale(1.035) translateY(-5px); }
+    .frog-art { display:block; width:100%; height:auto; filter:drop-shadow(0 15px 0 rgba(76,46,92,.10)); animation:frogFloat 3.6s ease-in-out infinite; overflow:visible; }
+    .froggy-eyes { transform-origin:center; animation:blink 8s infinite; }
+    .frog-btn.boing .frog-art { animation:boing .5s both; }
+    .scene-sticker { position:absolute; z-index:4; top:7px; right:-5px; background:#fff9b7; border:2px solid var(--line); border-radius:50%; transform:rotate(13deg); width:113px; aspect-ratio:1; display:grid;place-items:center; text-align:center; font-size:14px; font-weight:1000; line-height:1.35; box-shadow:6px 6px 0 var(--line); }
+    .scene-sticker .heart { font-size:22px;color:var(--hot); }
+    .scene-tag { position:absolute; z-index:3; bottom:14px; left:-20px; background:#fc88bc; padding:11px 20px; border:2px solid var(--line); border-radius:12px; transform:rotate(-8deg); font-size:15px; font-weight:1000; box-shadow:5px 5px 0 var(--line); }
+    .scribble { position:absolute; font-size:38px; font-weight:900; pointer-events:none; animation:twinkle 3s ease-in-out infinite; }
+    .s1 { left:6%; top:9%; color:#eb6b95; }.s2 {right:3%; bottom:24%;color:#ffdf62;animation-delay:1.2s}.s3 {top:25%;right:1%; color:#fff;font-size:55px;animation-delay:.7s}
+    .balloon-field { position:absolute; inset:0; pointer-events:none; z-index:5; }
+    .balloon { pointer-events:auto; position:absolute; width:68px; height:100px; border:0; background:none; padding:0; animation:drift var(--dur,4s) ease-in-out infinite alternate; transform-origin:bottom center; }
+    .balloon-body { position:absolute; inset:2px 2px 17px; background:var(--c); border:2.5px solid #352a28; border-radius:49% 51% 50% 50% / 53% 54% 46% 47%; box-shadow:inset -11px -7px 0 rgba(31,23,40,.08); transition:scale .12s; }
+    .balloon-body::before {content:"";position:absolute;width:11px;height:29px;border-radius:50%;background:#fff9;left:13px;top:13px;transform:rotate(25deg)}
+    .balloon-body::after { content:""; position:absolute;left:calc(50% - 6px);bottom:-10px;width:12px;height:10px;background:var(--c);border:2px solid #352a28;border-radius:40% 40% 58% 58%;transform:rotate(-5deg);box-shadow:none; }
+    .balloon-string { position:absolute; top:92px; left:34px; height:78px; width:24px; border-left:2px solid #493f38; border-radius:0 0 0 70%; transform:rotate(-5deg); }
+    .balloon:hover .balloon-body {scale:1.08}
+    .balloon.pop {animation:none!important;pointer-events:none}.balloon.pop .balloon-body {animation:balloonPop .23s ease-out forwards}.balloon.pop .balloon-string {opacity:0;transition:opacity .1s}
+    .balloon.one {left:2.2%;top:18%;--c:#ff87c0;--dur:4.2s;transform:rotate(-14deg)}
+    .balloon.two {left:1%;top:62%;--c:#b9f46b;--dur:3.7s;animation-delay:-1.5s}
+    .balloon.three {right:3%;top:21%;--c:#ffe06d;--dur:5s;animation-delay:-2s}
+    .balloon.four {right:8%;top:42%;--c:#a98cf5;--dur:4.1s;animation-delay:-1s}
+    .balloon.five {left:45%;bottom:3%;--c:#83d8fa;--dur:4.8s;animation-delay:-3s}
+    .balloon.six {right:24%;bottom:2%;--c:#ff9c71;--dur:3.9s;animation-delay:-2.4s}
+    .balloon-count {position:absolute;z-index:7;bottom:16px;left:50%;transform:translateX(-50%);font-size:13px;font-weight:900;color:#8f776f;background:#fff9efdb;border:2px solid #e6cdbb;padding:9px 16px;border-radius:99px;text-align:center;white-space:nowrap;}
+    .pop-message {position:fixed;top:90px;left:50%;transform:translate(-50%,-25px);z-index:150;opacity:0;pointer-events:none; padding:14px 22px;border-radius:24px; background:#e0f8b5;border:3px solid var(--line);box-shadow:5px 6px 0 var(--line);font-weight:900;transition:opacity .2s,transform .25s;max-width:92vw;text-align:center;}
+    .pop-message.show {opacity:1;transform:translate(-50%,0)}
+    .content { position:relative; padding:100px 24px 110px; background:linear-gradient(180deg,#fff4f0,#fff8e9 42%,#fff8e9); }
+    .content::before { content:""; position:absolute; top:-38px;left:0;right:0;height:52px;background: radial-gradient(circle at 23px -9px,transparent 30px,#fff4f0 31px) 0 0/47px 53px repeat-x; }
+    .section-header {max-width:1000px;margin:0 auto 34px;text-align:center}
+    .section-kicker {display:inline-block;padding:9px 18px;background:var(--yellow);border:2px solid var(--line);box-shadow:4px 4px 0 var(--line);border-radius:100px;transform:rotate(-3deg);text-transform:uppercase;font-size:12px;letter-spacing:.12em;font-weight:1000}
+    h2 {font-size:clamp(39px,6vw,67px);letter-spacing:-.065em;line-height:1.08;margin:22px 0 15px;font-weight:1000}
+    .section-header p {font-size:18px;color:#7d6960;font-weight:700;line-height:1.5}
+    .certificate-wrap {max-width:1120px;margin:auto;perspective:1600px}
+    .ticket {position:relative;display:grid;grid-template-columns:.9fr 1.1fr;background:#fffdf6;border:3px solid var(--line);border-radius:32px;box-shadow:15px 18px 0 #f7bcd6, 18px 21px 0 var(--line);overflow:hidden;min-height:485px;transform-origin:50% 0;}
+    .ticket-art {position:relative;background:#bdec85;display:flex;align-items:center;justify-content:center;min-height:425px;overflow:hidden;border-right:3px dashed #4c6040}
+    .ticket-art::before {content:"";position:absolute;width:430px;height:430px;background:#efb2e3;border:3px solid #382935;border-radius:42% 58% 48% 52%;transform:rotate(19deg) translate(-3%,5%);}
+    .ticket-art::after {content:"";position:absolute;width:150px;height:150px;border:17px solid #f2d76a; border-radius:50%;top:-75px;right:-60px;}
+    .ticket-rug {position:relative;width:87%;max-width:390px;transform:rotate(-9deg);filter:drop-shadow(11px 15px 0 #332428);}
+    .ticket-rug svg {display:block;width:100%;height:auto}
+    .ticket-mini-label {position:absolute;bottom:30px;right:17px;transform:rotate(7deg);background:white;border:2px solid var(--line);border-radius:12px;box-shadow:4px 4px 0 var(--line);padding:10px 14px;font-weight:1000;font-size:13px;}
+    .ticket-info {padding:49px 48px 38px;position:relative;background-image:radial-gradient(#e8cde6 1.1px,transparent 1.1px);background-size:18px 18px}
+    .ticket-info::before,.ticket-info::after{content:"";position:absolute;left:-19px;width:35px;height:35px;border-radius:50%;border:3px solid var(--line);background:#fff4f0;z-index:2}
+    .ticket-info::before{top:-19px}.ticket-info::after{bottom:-19px}
+    .ticket-stamp {display:inline-flex;gap:8px;align-items:center;background:#f9d0e7;border:2px solid var(--line);border-radius:99px;padding:8px 13px;font-size:11px;text-transform:uppercase;letter-spacing:.1em;font-weight:1000;}
+    .ticket h3 {font-size:clamp(37px,4vw,60px);line-height:1.06;letter-spacing:-.067em;margin:22px 0 14px;font-weight:1000}
+    .ticket h3 .pink {color:#ed4a97}
+    .ticket-subtitle {font-size:16px;line-height:1.5;color:#6d5b53;font-weight:700;margin:0 0 24px;max-width:400px}
+    .meta {display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:0 0 20px}
+    .meta-item {background:#fff4d9;border:2px solid var(--line);border-radius:14px;padding:13px 15px}
+    .meta-item:nth-child(2) {background:#e8dfff}
+    .meta-item .small {color:#71645a;font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:1000;margin-bottom:5px}
+    .meta-item .value {font-weight:1000;font-size:20px;letter-spacing:-.03em}
+    .serial-box {background:#f6f1e8;border:2px dashed #8e8170;border-radius:13px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+    .serial-box .small{font-size:11px;text-transform:uppercase;color:#85796e;letter-spacing:.06em;font-weight:1000}
+    .serial {font-weight:1000;font-size:clamp(16px,2vw,21px);letter-spacing:.025em;margin-top:4px;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+    .copy-btn {flex-shrink:0;border:2px solid var(--line);border-radius:11px;background:#fff;padding:10px 12px;font-size:12px;font-weight:900;box-shadow:3px 3px 0 var(--line);transition:transform .15s,box-shadow .15s}
+    .copy-btn:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--line)}
+    .ticket-note {font-size:12px;color:#88786e;margin:17px 0 0;font-weight:700}
+    .gift-signature {padding:45px 12px 18px;text-align:center;color:#6f6055;font-size:19px;font-weight:800;line-height:1.6}
+    .gift-signature strong {color:#ec5ba1}
+    .action-strip {display:flex;justify-content:center;flex-wrap:wrap;gap:15px;margin:15px auto 0}
+    .pill-link {text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:51px;padding:13px 20px;font-size:14px;font-weight:1000;border:2px solid var(--line);border-radius:14px;background:#bff28b;box-shadow:4px 5px 0 var(--line);transition:transform .15s,box-shadow .15s}
+    .pill-link.second {background:#ffddeb}.pill-link:hover{transform:translate(2px,3px);box-shadow:2px 2px 0 var(--line)}
+    .mini-activity {max-width:1050px;margin:105px auto 0;display:grid;grid-template-columns:.9fr 1fr;gap:65px;align-items:center}
+    .activity-copy .section-kicker {background:#d3c3ff}
+    .activity-copy h2 {margin-top:28px}
+    .activity-copy p {color:#75655e;font-weight:700;line-height:1.6;font-size:17px;max-width:440px}
+    .tip {margin-top:18px;display:flex;align-items:flex-start;gap:11px;font-size:13px;line-height:1.5;color:#90796f;font-weight:700}
+    .tip .emoji {font-size:20px}
+    .paint-card {background:#fffdf7;border:3px solid var(--line);border-radius:28px;padding:22px;box-shadow:11px 12px 0 #d9c8ff,14px 15px 0 var(--line);transform:rotate(1deg)}
+    .paint-title {display:flex;align-items:center;justify-content:space-between;margin-bottom:15px;gap:10px;font-weight:1000;font-size:16px}
+    .paint-title .stars {color:var(--purple);font-size:25px}
+    .rug-frame {background:#c9966c;border:8px solid #eab887;outline:2px solid var(--line);border-radius:7px;padding:12px;box-shadow:inset 0 0 0 2px #fff5e4;position:relative}
+    .rug-frame:before,.rug-frame:after {content:"";position:absolute;width:10px;height:10px;border-radius:50%;background:#fff8c9;border:2px solid var(--line);top:1px}.rug-frame:before{left:1px}.rug-frame:after{right:1px}
+    .pixel-rug {margin:auto;display:grid;grid-template-columns:repeat(13,minmax(0,1fr));gap:2px;aspect-ratio:1;max-width:380px;touch-action:none;user-select:none;}
+    .px {border-radius:3px;background:var(--px,#fff6dd);box-shadow:inset 1px 1px 1px #fff9, inset -1px -1px 1px #0001;cursor:crosshair;transition:background-color .08s;}
+    .px:hover {outline:1px solid #433628;outline-offset:-1px}
+    .palette-row {display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap;margin-top:20px}
+    .palette {display:flex;gap:9px}
+    .swatch {width:34px;height:34px;border:2px solid var(--line);border-radius:50%;background:var(--swatch);padding:0;box-shadow:2px 3px 0 #0002;transition:transform .15s}
+    .swatch.active {outline:3px solid #6a4be4;outline-offset:3px;transform:translateY(-3px)}
+    .paint-tools {display:flex;gap:8px}
+    .tool-btn {background:#f8e9fc;border:2px solid var(--line);padding:9px 11px;border-radius:9px;font-size:12px;font-weight:900}
+    .tool-btn:hover{background:#efd4ff}
+    .end {position:relative;text-align:center;background:#2b2440;color:#fff7ee;padding:50px 24px 43px;overflow:hidden}
+    .end::before,.end::after{content:"✳";position:absolute;font-size:150px;color:#ad90ed;opacity:.15;top:-70px;left:4%}.end::after{left:auto;right:4%;top:auto;bottom:-85px;color:#fff06f}
+    .end .large {font-size:36px;font-weight:1000;letter-spacing:-.05em}
+    .end p {color:#d7cfe2;line-height:1.5;font-size:14px;max-width:620px;margin:10px auto 0}
+    .end a{color:#c6f19c;text-decoration-thickness:2px;text-underline-offset:3px}
+    .hidden {display:none!important}
+    .content.is-revealed .ticket {animation:ticketAppear .85s cubic-bezier(.17,.67,.23,1.09) both}
+    .confetti {position:fixed;width:10px;height:14px;top:0;left:0;pointer-events:none;z-index:999;transform:translate(-50%,-50%);animation:confettiFly var(--t,900ms) cubic-bezier(.08,.62,.3,1) forwards;}
+    .heart-particle {position:fixed;z-index:200;pointer-events:none;font-size:23px;animation:heartRise .9s ease-out forwards;}
+    @keyframes frogFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}
+    @keyframes blink{0%,43%,45%,100%{transform:scaleY(1)}44%{transform:scaleY(.07)}}
+    @keyframes twinkle{0%,100%{scale:1;rotate:0deg}50%{scale:1.15;rotate:12deg}}
+    @keyframes drift{0%{translate:0 0;rotate:-5deg}100%{translate:5px -19px;rotate:6deg}}
+    @keyframes balloonPop{0%{transform:scale(1);opacity:1}50%{transform:scale(1.24);opacity:.9}100%{transform:scale(.1);opacity:0}}
+    @keyframes boing{0%{transform:translateY(0) rotate(0)}40%{transform:translateY(-21px) rotate(6deg)}75%{transform:translateY(3px) rotate(-4deg)}100%{transform:translateY(0) rotate(0)}}
+    @keyframes ticketAppear{from{opacity:0;transform:translateY(45px) rotateX(-12deg) scale(.96)}to{opacity:1;transform:translateY(0) rotateX(0) scale(1)}}
+    @keyframes confettiFly{from{opacity:1;transform:translate(-50%,-50%) rotate(0)}to{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(var(--spin))}}
+    @keyframes heartRise{from{opacity:1;transform:translate(-50%,-50%) scale(.4)}to{opacity:0;transform:translate(calc(-50% + var(--hx)),-145px) scale(1.7) rotate(var(--hr))}}
+    @media(max-width:1050px){.stage{padding-bottom:96px}.hero{grid-template-columns:1fr .95fr;gap:2px}.hero h1{font-size:clamp(50px,6.5vw,77px)}.hero-desc{font-size:17px}.scene{height:470px}.scene-sticker{right:0}.balloon.one,.balloon.two{left:0}.balloon.four{right:0}.ticket-info{padding:37px 26px}.ticket h3{font-size:47px}.mini-activity{gap:30px}}
+    @media(max-width:720px){
+      .stage{min-height:auto;padding:18px 20px 78px}.topbar{gap:9px}.brand-title{font-size:20px}.brand-icon{width:38px;height:38px}.top-note{font-size:11px;padding:8px 10px;max-width:142px;line-height:1.25}
+      .hero{margin-top:60px;grid-template-columns:1fr;gap:8px}.hero-copy{padding:0;text-align:center}.eyebrow{font-size:10px;margin-bottom:20px}.hero h1{margin:auto;max-width:590px;font-size:clamp(48px,12vw,72px)}.hero-desc{font-size:17px;max-width:520px;margin:22px auto 24px}.primary-btn{font-size:16px;padding:18px 22px}.little-instruction{font-size:12px;margin:17px 0 0}
+      .scene{height:auto;max-width:530px;width:100%;margin:22px auto 15px}.scene::before{height:87%;top:5%;width:85%;left:7%}.frog-btn{width:96%}.scene-sticker{width:86px;font-size:11px;right:2%;top:0}.scene-tag{bottom:1%;left:2%;font-size:12px;padding:9px 12px}.scribble{font-size:31px}
+      .balloon{scale:.7}.balloon.one{left:-16px;top:19%}.balloon.two{left:-24px;top:56%}.balloon.three{right:-14px;top:24%}.balloon.four{right:-27px;top:52%}.balloon.five{left:7%;bottom:1%}.balloon.six{right:8%;bottom:5%}.balloon-count{bottom:12px;font-size:11px}
+      .content{padding:68px 21px 85px}.section-header{margin-bottom:28px}.section-header p{font-size:15px}.ticket{display:block;box-shadow:8px 10px 0 #f7bcd6,10px 12px 0 var(--line)}.ticket-art{min-height:315px;height:350px;border-right:0;border-bottom:3px dashed #4c6040}.ticket-art::before{width:300px;height:300px}.ticket-rug{max-width:285px}.ticket-info{padding:30px 23px 30px}.ticket-info::before,.ticket-info::after{top:-19px;bottom:auto}.ticket-info::before{left:-19px}.ticket-info::after{right:-19px;left:auto}.ticket h3{font-size:clamp(39px,9vw,54px)}.ticket-subtitle{font-size:15px}.meta-item .value{font-size:18px}.ticket-note{font-size:11px}.gift-signature{padding:30px 6px 18px;font-size:16px}.mini-activity{grid-template-columns:1fr;gap:26px;margin-top:82px}.activity-copy{text-align:center}.activity-copy p{margin:0 auto}.tip{text-align:left;justify-content:center}.paint-card{transform:none;padding:16px}.paint-title{font-size:14px}.swatch{width:30px;height:30px}.end .large{font-size:26px}
+    }
+    @media(max-width:370px){.meta{gap:7px}.meta-item{padding:11px}.meta-item .value{font-size:16px}.palette{gap:6px}.swatch{width:27px;height:27px}.copy-btn{padding:8px}.hero h1{font-size:43px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+    /* Focused revisions; all original decorative composition is preserved. */
+    .serial-box .serial {display:inline-block;color:var(--ink);text-decoration:none;}
+    .serial-box .serial:hover {text-decoration:underline;text-decoration-color:var(--hot);text-underline-offset:3px;}
+    .hero-copy {padding-bottom:30px;}
+    .scene {isolation:isolate;}
+    .ticket-info .meta-item .value {font-size:clamp(15px,1.8vw,19px);line-height:1.24;}
+    .ticket-info .ticket-stamp {background:#f9d0e7;}
+    @media(max-width:720px){
+       .hero-copy {padding-bottom:0;}
+       .hero-desc{margin:20px auto 28px;}
+       .ticket-info .meta-item .value {font-size:16px;}
+       .serial-box {align-items:flex-start;flex-wrap:wrap;}
+       .balloon-count {bottom:10px;}
+       /* Keep the original balloons, but let the main message breathe on phones. */
+       .balloon.one{left:-24px;top:49%;}
+       .balloon.two{left:-27px;top:74%;}
+       .balloon.three{right:-20px;top:48%;}
+       .balloon.four{right:-27px;top:66%;}
+    }
+
+    /* The authentic mascot is embedded, NOT re-drawn. */
+    .brand-icon img.authentic-frog-mark {display:block;width:35px;height:39px;object-fit:contain;}
+    .frog-art .official-frog-head {image-rendering:auto;}
+    /* A reveal button is not displayed until ALL six balloons have popped. */
+    .reveal-cta[hidden] {display:none!important;}
+    .reveal-cta.ready {display:inline-flex;animation:ticketAppear .55s cubic-bezier(.17,.67,.23,1.09) both;}
+    .hero-copy {min-height:270px;}
+    .balloon-body::after {z-index:3;}
+    .balloon-string {z-index:1;}
+    @media(max-width:720px){
+       .brand-icon img.authentic-frog-mark{width:31px;height:34px;}
+       .hero-copy {min-height:0;}
+       .reveal-cta.ready {margin-top:25px;}
+       .balloon-count {bottom:11px;}
+    }
+  
+
+    /* Revision: user's own vector mascots and balloons, offline-ready. */
+    .brand {flex-shrink:0}
+    .brand-icon {width:52px;height:52px;padding:1px;box-shadow:4px 4px 0 var(--line)}
+    .brand-icon svg.authentic-frog-mark {display:block;width:45px;height:45px;overflow:visible}
+    .frog-btn {width:min(90%,490px);max-width:490px;display:block;justify-self:center;}
+    .frog-art {width:100%;height:auto;display:block;overflow:visible;filter:drop-shadow(0 17px 0 rgba(74,45,91,.1));}
+    .frog-art .frog-eyes {transform-origin:center}
+    .ticket-rug-svg {display:block;width:100%;height:auto;overflow:visible}
+    .balloon {width:81px;height:127px;z-index:1;overflow:visible;touch-action:manipulation;}
+    .balloon-svg {display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(2px 5px 1px #39262911);transition:transform .15s;}
+    .balloon:hover .balloon-svg {transform:scale(1.08)}
+    .balloon.pop .balloon-svg {animation:balloonPop .17s ease-out both}
+    .balloon.pop {pointer-events:none!important}
+    .balloon.one {left:3%;top:19%}
+    .balloon.two {left:2%;top:65%}
+    .balloon.three {right:3%;top:20%}
+    .balloon.four {right:8%;top:47%}
+    .balloon.five {left:22%;bottom:12%}
+    .balloon.six {right:22%;bottom:10%}
+    .stage {padding-bottom:160px}
+    .hero-copy {min-height:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding-bottom:0}
+    .hero-copy .reveal-cta.ready {position:relative;align-self:flex-start;margin-top:48px;z-index:8;}
+    .balloon-count {bottom:78px;z-index:12;box-shadow:0 2px 0 rgba(102,70,65,.03)}
+    .content::before {top:-34px}
+    /* Bright impact ring, tiny starburst, and flying coloured balloon fragments. */
+    .pop-burst {position:fixed;width:0;height:0;z-index:998;pointer-events:none;isolation:isolate;}
+    .pop-ring {position:absolute;left:0;top:0;border:5px solid var(--pop-color);width:38px;height:38px;border-radius:50%;transform:translate(-50%,-50%) scale(.2);animation:popRing .52s cubic-bezier(.16,.76,.23,1) forwards;box-shadow:0 0 0 3px #fff9 inset}
+    .pop-flash {position:absolute;left:0;top:0;width:65px;height:65px;transform:translate(-50%,-50%);background:#fff4a4;clip-path:polygon(50% 0%,59% 31%,78% 13%,72% 37%,100% 43%,72% 56%,92% 81%,60% 68%,50% 100%,41% 69%,17% 86%,29% 57%,0 50%,29% 41%,12% 19%,42% 32%);animation:popFlash .35s ease-out both;}
+    .pop-shard {position:absolute;left:0;top:0;width:var(--w,12px);height:var(--h,18px);background:var(--piece);clip-path:polygon(50% 0,100% 100%,0 84%);transform:translate(-50%,-50%);animation:popShard var(--speed,750ms) cubic-bezier(.08,.65,.19,1) forwards;filter:drop-shadow(0 1px 0 #302b2c55)}
+    .pop-spark {position:absolute;left:0;top:0;width:7px;height:7px;background:var(--piece);border-radius:50%;transform:translate(-50%,-50%);animation:popShard var(--speed,750ms) ease-out forwards;}
+    @keyframes popRing {0%{opacity:1;transform:translate(-50%,-50%) scale(.15)}65%{opacity:.9}100%{opacity:0;transform:translate(-50%,-50%) scale(5.7)}}
+    @keyframes popFlash {0%{opacity:0;transform:translate(-50%,-50%) scale(.2) rotate(-18deg)}22%{opacity:1;transform:translate(-50%,-50%) scale(1.6) rotate(10deg)}100%{opacity:0;transform:translate(-50%,-50%) scale(2.7) rotate(23deg)}}
+    @keyframes popShard {0%{opacity:1;transform:translate(-50%,-50%) scale(.3) rotate(0)}20%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.75) rotate(var(--spin))}}
+    @media(max-width:720px){
+      .stage {padding-bottom:125px}
+      .brand-icon {width:43px;height:43px}
+      .brand-icon svg.authentic-frog-mark {width:36px;height:36px}
+      .hero-copy {align-items:center;padding-bottom:0;text-align:center}
+      .hero-copy .reveal-cta.ready {align-self:center;margin-top:40px}
+      .hero h1 {line-height:1.12;overflow-wrap:normal}
+      .scene {min-height:310px;margin-top:30px;margin-bottom:20px}
+      .frog-btn {width:87%}
+      .balloon {scale:.76;width:77px;height:125px}
+      .balloon.one {left:0;top:43%}
+      .balloon.two {left:0;top:59%}
+      .balloon.three {right:0;top:43%}
+      .balloon.four {right:0;top:59%}
+      .balloon.five {left:2%;bottom:13%}
+      .balloon.six {right:1%;bottom:13%}
+      .balloon-count {bottom:65px;padding:8px 14px;max-width:84vw}
+      .content::before {top:-32px}
+    }
+    @media(max-width:390px){.hero-copy .reveal-cta.ready{margin-top:34px}.hero h1{font-size:clamp(42px,11vw,54px)}}
+    @media(prefers-reduced-motion:reduce){.pop-ring,.pop-flash,.pop-shard,.pop-spark{animation:none!important;display:none!important}}
+</style>
+</head>
+<body>
+<main>
+<section aria-labelledby="heroTitle" class="stage">
+<div aria-hidden="true" class="speckle"></div>
+<div class="topbar">
+<div aria-label="Лягушечка" class="brand"><span aria-hidden="true" class="brand-icon"><svg aria-hidden="true" aria-labelledby="header-title header-desc" class="authentic-frog-mark" viewBox="0 0 300 262" xmlns="http://www.w3.org/2000/svg">
+<title id="header-title">Зелёная лягушечка в сером колпаке</title>
+<desc id="header-desc">Зелёная лягушечка с жёлтыми глазами со звёздочками, розовыми щеками и двумя серыми пуговицами на колпаке.</desc>
+<defs>
+<linearGradient gradientUnits="objectBoundingBox" id="header-frogGreen" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0" stop-color="#9bbe4b"/>
+<stop offset="0.83" stop-color="#9bbe4b"/>
+<stop offset="1" stop-color="#9cbe4b"/>
+</linearGradient>
+<linearGradient id="header-eyeYellow" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0" stop-color="#f9e372"/>
+<stop offset="1" stop-color="#f9e372"/>
+</linearGradient>
+</defs>
+<!-- Background -->
+
+<g>
+<!-- Gray pointy hat, behind the frog -->
+<path d="M108.4 115.4 C118 91.1 132 58.7 144.9 27.1 C150.4 13.5 155.5 11.0 160.8 20.7 C176.8 51.6 189.6 80.9 203.4 111.9 L184.8 137 L130.0 137 Z" fill="#e5e5e5" stroke="#2f302e" stroke-linejoin="round" stroke-width="2.8"/>
+<!-- Soft white highlight on the right side of hat -->
+<!-- Hat buttons -->
+<circle cx="155.2" cy="71.2" fill="#5f5f5f" r="7.9" stroke="#292929" stroke-width="2.7"/>
+<circle cx="157.1" cy="102.7" fill="#5f5f5f" r="9.3" stroke="#292929" stroke-width="2.8"/>
+<!-- Frog body silhouette -->
+<path d="M103.5 110.3       C120.0 110.2 132.8 119.1 141.0 133.8       C148.1 130.9 158.1 131.0 165.3 133.6       C173.0 118.8 187.1 110.2 202.4 109.9       C227.4 107.6 244.4 124.5 244.2 145.8       C244.1 151.7 242.1 158.7 244.0 163.5       C255.8 171.3 260.5 183.5 259.5 199.3       C257.8 222.9 235.1 239.9 201.0 244.3       C163.5 249.4 117.3 247.9 100.9 245.1       C68.9 240.5 51.3 224.9 48.9 202.1       C46.6 185.1 54.0 171.0 66.9 161.6       C64.5 154.6 63.8 145.6 66.6 137.1       C72.2 119.2 86.2 110.5 103.5 110.3 Z" fill="url(#header-frogGreen)" id="header-frogBody" stroke="#292c26" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.0"/>
+<!-- Soft green reflection across the lower edge -->
+<!-- Pink cheeks -->
+<path d="M76 172.5 C89 172.5 99.5 184.3 99.5 196.7 C99.5 210.2 89.5 220.6 76 220.6 C62 220.7 51.2 210.2 51.2 197.0 C51.1 182.4 61.5 172.5 76 172.5 Z" fill="#ecb0c3"/>
+<path d="M232.2 172.2 C246.1 172.2 256.8 183.4 256.8 196.6 C256.8 209.9 246.3 220.4 232.3 220.4 C218.4 220.4 207.7 209.9 207.7 196.7 C207.7 183 218.0 172.2 232.2 172.2 Z" fill="#ecb0c3"/>
+<!-- Tiny pale cheek glints -->
+<!-- Left eye -->
+<path d="M98.8 109.8 C83.6 109.7 70.5 119.0 66.1 132.4 C59.9 150.1 70.3 164.8 82.9 169.1 C96.0 173.4 113.5 170.3 123.7 159.0 C133.1 147.7 131.4 132.3 124.4 121.2 C118.0 113.4 108.9 109.4 98.8 109.8 Z" fill="#f9e372" stroke="#2d3025" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.2"/>
+<!-- Right eye -->
+<path d="M210.3 109.6 C193.7 108.8 183.3 118.8 178.6 132.5 C172.5 150.0 183.8 163.3 197.4 167.7 C212.3 172.5 226.9 167.4 236.1 157.8 C245.4 147.2 245.2 133.1 238.4 121.1 C232.0 111.0 220.9 109.2 210.3 109.6 Z" fill="#f9e372" stroke="#2d3025" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.2"/>
+<!-- Subtle eye highlights -->
+<!-- Irregular four-point pupils, slightly softened like the source -->
+<path d="M97.2 121.9 C99.6 121.8 101.5 127.6 101.6 132.9 C107.7 133.4 114.7 135.3 115.6 138.1 C115.4 140.6 107.7 142.1 101.7 142.3 C101.6 147.2 99.9 156.7 97.0 157.6 C94.0 156.5 93.2 148.3 92.6 142.3 C87.4 141.6 80.5 140.7 79.4 138.4 C79.4 135.6 87.5 134.2 92.9 133.7 C93.0 128.0 94.5 122.0 97.2 121.9 Z" fill="#000"/>
+<path d="M209.7 117.9 C212.1 118.0 213.8 125.1 214.1 131.7 C219.4 132.2 227.3 133.8 228.6 136.8 C228.4 139.3 221.0 140.7 214.2 141.1 C213.9 146.5 212.4 153.6 209.4 155.1 C206.5 153.1 205.4 145.4 205.0 140.9 C198.4 140.5 192.1 138.8 191.2 136.2 C192.8 133.5 200.0 132.3 205.1 131.6 C205.2 125.4 207.4 118.5 209.7 117.9 Z" fill="#000"/>
+<!-- Small nostrils -->
+<path d="M141.2 154.8 C142.1 152.2 144.8 151.7 147.6 151.5" fill="none" stroke="#303923" stroke-linecap="round" stroke-width="2.8"/>
+<path d="M159.7 151.7 C162.3 151.8 164.0 153.3 164.7 155.0" fill="none" stroke="#303923" stroke-linecap="round" stroke-width="2.8"/>
+<!-- Smile: slight arch in the centre, lower near the dimples -->
+<path d="M81.7 194.1 C99.2 198.0 115.0 196.6 130.4 191.6 C147.4 185.8 161.6 187.6 176.8 191.2 C197.5 197.1 217.3 198.9 232.9 191.1" fill="none" stroke="#323b23" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.7"/>
+<path d="M79.9 198.0 C81.8 194.7 83.0 190.0 82.8 190.7 M233.6 188.0 C233.5 191.5 235.2 194.7 236.1 196.1" fill="none" stroke="#323b23" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+</g>
+</svg></span></div>
+</div>
+<div class="hero">
+<div class="hero-copy">
+<div class="eyebrow"><span class="mini-star">✳</span> сюрприз <span class="mini-star">✳</span></div>
+<h1 id="heroTitle">Тебя ждёт кое-что <span class="highlight">пушистое!</span></h1>
+<button class="primary-btn reveal-cta" hidden="" id="revealButton" type="button">Посмотреть сертификат <span class="arrow">↗</span></button>
+</div>
+<div class="scene">
+<span aria-hidden="true" class="scribble s1">✦</span><span aria-hidden="true" class="scribble s2">✳</span><span aria-hidden="true" class="scribble s3">✦</span>
+<button aria-label="Погладить лягушку" class="frog-btn" id="frogButton" title="Погладь лягушку!" type="button">
+<svg aria-label="Лягушечка обнимает розовое сердечко" aria-labelledby="hero-title hero-desc" class="frog-art" role="img" viewBox="0 0 300 292" xmlns="http://www.w3.org/2000/svg">
+<title id="hero-title">Лягушечка держит сердечко</title>
+<desc id="hero-desc">Зелёная лягушка с жёлтыми глазами-звёздочками, розовыми щёчками и серым колпаком нежно обнимает розовое сердце.</desc>
+<defs>
+<linearGradient gradientUnits="objectBoundingBox" id="hero-frogGreen" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0" stop-color="#9bbe4b"/>
+<stop offset="0.83" stop-color="#9bbe4b"/>
+<stop offset="1" stop-color="#9cbe4b"/>
+</linearGradient>
+<linearGradient id="hero-eyeYellow" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0" stop-color="#f9e372"/>
+<stop offset="1" stop-color="#f9e372"/>
+</linearGradient>
+<linearGradient id="hero-heartColor" x1="0" x2="0.95" y1="0" y2="1"><stop offset="0" stop-color="#ffabc1"/><stop offset=".36" stop-color="#ff819f"/><stop offset="1" stop-color="#eb658a"/></linearGradient></defs>
+<!-- Background -->
+<g>
+<!-- Gray pointy hat, behind the frog -->
+<path d="M108.4 115.4 C118 91.1 132 58.7 144.9 27.1 C150.4 13.5 155.5 11.0 160.8 20.7 C176.8 51.6 189.6 80.9 203.4 111.9 L184.8 137 L130.0 137 Z" fill="#e5e5e5" stroke="#2f302e" stroke-linejoin="round" stroke-width="2.8"/>
+<!-- Soft white highlight on the right side of hat -->
+<!-- Hat buttons -->
+<circle cx="155.2" cy="71.2" fill="#5f5f5f" r="7.9" stroke="#292929" stroke-width="2.7"/>
+<circle cx="157.1" cy="102.7" fill="#5f5f5f" r="9.3" stroke="#292929" stroke-width="2.8"/>
+<!-- Frog body silhouette -->
+<path d="M103.5 110.3       C120.0 110.2 132.8 119.1 141.0 133.8       C148.1 130.9 158.1 131.0 165.3 133.6       C173.0 118.8 187.1 110.2 202.4 109.9       C227.4 107.6 244.4 124.5 244.2 145.8       C244.1 151.7 242.1 158.7 244.0 163.5       C255.8 171.3 260.5 183.5 259.5 199.3       C257.8 222.9 235.1 239.9 201.0 244.3       C163.5 249.4 117.3 247.9 100.9 245.1       C68.9 240.5 51.3 224.9 48.9 202.1       C46.6 185.1 54.0 171.0 66.9 161.6       C64.5 154.6 63.8 145.6 66.6 137.1       C72.2 119.2 86.2 110.5 103.5 110.3 Z" fill="url(#hero-frogGreen)" id="hero-frogBody" stroke="#292c26" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.0"/>
+<!-- Soft green reflection across the lower edge -->
+<!-- Pink cheeks -->
+<path d="M76 172.5 C89 172.5 99.5 184.3 99.5 196.7 C99.5 210.2 89.5 220.6 76 220.6 C62 220.7 51.2 210.2 51.2 197.0 C51.1 182.4 61.5 172.5 76 172.5 Z" fill="#ecb0c3"/>
+<path d="M232.2 172.2 C246.1 172.2 256.8 183.4 256.8 196.6 C256.8 209.9 246.3 220.4 232.3 220.4 C218.4 220.4 207.7 209.9 207.7 196.7 C207.7 183 218.0 172.2 232.2 172.2 Z" fill="#ecb0c3"/>
+<!-- Tiny pale cheek glints -->
+<!-- Left eye -->
+<path d="M98.8 109.8 C83.6 109.7 70.5 119.0 66.1 132.4 C59.9 150.1 70.3 164.8 82.9 169.1 C96.0 173.4 113.5 170.3 123.7 159.0 C133.1 147.7 131.4 132.3 124.4 121.2 C118.0 113.4 108.9 109.4 98.8 109.8 Z" fill="#f9e372" stroke="#2d3025" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.2"/>
+<!-- Right eye -->
+<path d="M210.3 109.6 C193.7 108.8 183.3 118.8 178.6 132.5 C172.5 150.0 183.8 163.3 197.4 167.7 C212.3 172.5 226.9 167.4 236.1 157.8 C245.4 147.2 245.2 133.1 238.4 121.1 C232.0 111.0 220.9 109.2 210.3 109.6 Z" fill="#f9e372" stroke="#2d3025" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.2"/>
+<!-- Subtle eye highlights -->
+<!-- Irregular four-point pupils, slightly softened like the source -->
+<path d="M97.2 121.9 C99.6 121.8 101.5 127.6 101.6 132.9 C107.7 133.4 114.7 135.3 115.6 138.1 C115.4 140.6 107.7 142.1 101.7 142.3 C101.6 147.2 99.9 156.7 97.0 157.6 C94.0 156.5 93.2 148.3 92.6 142.3 C87.4 141.6 80.5 140.7 79.4 138.4 C79.4 135.6 87.5 134.2 92.9 133.7 C93.0 128.0 94.5 122.0 97.2 121.9 Z" fill="#000"/>
+<path d="M209.7 117.9 C212.1 118.0 213.8 125.1 214.1 131.7 C219.4 132.2 227.3 133.8 228.6 136.8 C228.4 139.3 221.0 140.7 214.2 141.1 C213.9 146.5 212.4 153.6 209.4 155.1 C206.5 153.1 205.4 145.4 205.0 140.9 C198.4 140.5 192.1 138.8 191.2 136.2 C192.8 133.5 200.0 132.3 205.1 131.6 C205.2 125.4 207.4 118.5 209.7 117.9 Z" fill="#000"/>
+<!-- Small nostrils -->
+<path d="M141.2 154.8 C142.1 152.2 144.8 151.7 147.6 151.5" fill="none" stroke="#303923" stroke-linecap="round" stroke-width="2.8"/>
+<path d="M159.7 151.7 C162.3 151.8 164.0 153.3 164.7 155.0" fill="none" stroke="#303923" stroke-linecap="round" stroke-width="2.8"/>
+<!-- Smile: slight arch in the centre, lower near the dimples -->
+<path d="M81.7 194.1 C99.2 198.0 115.0 196.6 130.4 191.6 C147.4 185.8 161.6 187.6 176.8 191.2 C197.5 197.1 217.3 198.9 232.9 191.1" fill="none" stroke="#323b23" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.7"/>
+<path d="M79.9 198.0 C81.8 194.7 83.0 190.0 82.8 190.7 M233.6 188.0 C233.5 191.5 235.2 194.7 236.1 196.1" fill="none" stroke="#323b23" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+</g>
+<g id="hero-heart-and-hands"><path d="M114.1 226.5 C103.8 218.9 94.9 223.5 93.1 233.3 C90.7 244.9 105.3 253.2 123.4 251.3 L130.0 235.2 Z" fill="#9bbe4b" stroke="#2d3028" stroke-linejoin="round" stroke-width="2.9"/><path d="M188.7 226.7 C200.4 217.7 209.9 221.9 212.8 232.8 C215.4 243.6 202.0 253.2 183.5 251.7 L177.6 237.6 Z" fill="#9bbe4b" stroke="#2d3028" stroke-linejoin="round" stroke-width="2.9"/><path d="M151.5 270.3 C139.0 257.5 119.0 247.9 110.8 231.0 C101.3 211.5 112.1 199.7 126.5 200.4 C138.4 200.9 146.2 207.7 151.5 215.3 C158.4 204.8 167.1 200.3 179.3 200.4 C194.3 200.4 204.0 213.7 195.3 231.3 C188.0 247.0 164.2 258.6 151.5 270.3 Z" fill="url(#hero-heartColor)" stroke="#563841" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.1"/><path d="M120.1 214.7 C118.0 219.1 119.1 224.2 122.0 229.1" fill="none" stroke="#ffd2df" stroke-linecap="round" stroke-width="4.3"/><path d="M126.1 208.8 C125.1 209.0 123.7 209.6 122.5 210.6" fill="none" stroke="#ffe0e9" stroke-linecap="round" stroke-width="3.5"/><path d="M108.3 228.4 C114.9 223.2 120.2 226.8 126.1 230.0 C129.8 232.0 131.3 236.7 127.5 239.2 C124.4 241.2 121.0 240.0 117.1 237.4 C118.4 243.1 116.1 246.8 112.0 247.0 C105.5 247.3 101.5 242.1 102.2 237.4 C102.7 233.9 104.4 230.9 108.3 228.4 Z" fill="#9bbe4b" stroke="#2d3028" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8"/><path d="M194.0 228.6 C188.1 224.7 182.6 227.2 177.4 230.1 C173.9 232.2 172.2 236.9 176.1 239.2 C179.0 241.2 182.6 239.8 186.3 237.7 C185.0 243.5 187.1 247.0 191.8 247.1 C198.7 247.3 201.7 241.9 201.3 237.3 C200.9 233.7 198.2 230.8 194.0 228.6 Z" fill="#9bbe4b" stroke="#2d3028" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8"/><path d="M108.0 235.2 C110.2 232.5 113.6 232.3 116.3 233.8" fill="none" stroke="#6b8f34" stroke-linecap="round" stroke-width="1.55"/><path d="M195.6 235.2 C193.7 232.8 190.9 232.4 188.4 233.8" fill="none" stroke="#6b8f34" stroke-linecap="round" stroke-width="1.55"/></g></svg>
+</button>
+</div>
+</div>
+<div aria-label="Шарики, которые можно лопать" class="balloon-field" id="balloons">
+<button aria-label="Лопнуть розовый шарик" class="balloon one" data-burst-color="#F6A3C7" type="button"><svg aria-hidden="true" class="balloon-svg" viewBox="0 0 300 470" xmlns="http://www.w3.org/2000/svg">
+<title>Воздушный шарик</title>
+<!-- Нить начинается точно под узелком -->
+<path d="M 150 316 C 154 352, 129 372, 144 397 S 171 437, 154 459" fill="none" stroke="#302b2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.6"/>
+<!-- Основная форма шарика: контур построен кривыми Безье -->
+<path d="M 150 32            C 94 32, 54 77, 52 139            C 49 202, 82 255, 118 281            C 130 290, 139 296, 150 302            C 161 296, 171 290, 183 281            C 218 254, 251 202, 248 139            C 246 77, 207 32, 150 32 Z" fill="#F6A3C7" stroke="#302b2c" stroke-linejoin="round" stroke-width="4.5"/>
+<!-- Два аккуратных бликa — тоже векторные -->
+<path d="M 91 95 C 107 68, 128 56, 148 54" fill="none" opacity=".82" stroke="#FFE3EF" stroke-linecap="round" stroke-width="12"/>
+<path d="M 77 122 C 75 132, 73 143, 74 151" fill="none" opacity=".7" stroke="#FFE3EF" stroke-linecap="round" stroke-width="7"/>
+<!-- Узелок намеренно касается основания шарика -->
+<path d="M 150 300 C 143 300, 136 311, 131 320            Q 150 315, 169 320            C 164 311, 157 300, 150 300 Z" fill="#EB8BB7" stroke="#302b2c" stroke-linejoin="round" stroke-width="4"/>
+<path d="M 138 313 Q 150 307, 162 313" fill="none" stroke="#F9BDD8" stroke-linecap="round" stroke-width="3"/>
+</svg></button>
+<button aria-label="Лопнуть зелёный шарик" class="balloon two" data-burst-color="#B4E786" type="button"><svg aria-hidden="true" class="balloon-svg" viewBox="0 0 300 470" xmlns="http://www.w3.org/2000/svg">
+<title>Воздушный шарик</title>
+<!-- Нить начинается точно под узелком -->
+<path d="M 150 316 C 154 352, 129 372, 144 397 S 171 437, 154 459" fill="none" stroke="#302b2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.6"/>
+<!-- Основная форма шарика: контур построен кривыми Безье -->
+<path d="M 150 32            C 94 32, 54 77, 52 139            C 49 202, 82 255, 118 281            C 130 290, 139 296, 150 302            C 161 296, 171 290, 183 281            C 218 254, 251 202, 248 139            C 246 77, 207 32, 150 32 Z" fill="#B4E786" stroke="#302b2c" stroke-linejoin="round" stroke-width="4.5"/>
+<!-- Два аккуратных бликa — тоже векторные -->
+<path d="M 91 95 C 107 68, 128 56, 148 54" fill="none" opacity=".82" stroke="#F0FFDC" stroke-linecap="round" stroke-width="12"/>
+<path d="M 77 122 C 75 132, 73 143, 74 151" fill="none" opacity=".7" stroke="#F0FFDC" stroke-linecap="round" stroke-width="7"/>
+<!-- Узелок намеренно касается основания шарика -->
+<path d="M 150 300 C 143 300, 136 311, 131 320            Q 150 315, 169 320            C 164 311, 157 300, 150 300 Z" fill="#8DD16A" stroke="#302b2c" stroke-linejoin="round" stroke-width="4"/>
+<path d="M 138 313 Q 150 307, 162 313" fill="none" stroke="#DCF5C0" stroke-linecap="round" stroke-width="3"/>
+</svg></button>
+<button aria-label="Лопнуть жёлтый шарик" class="balloon three" data-burst-color="#FFE07C" type="button"><svg aria-hidden="true" class="balloon-svg" viewBox="0 0 300 470" xmlns="http://www.w3.org/2000/svg">
+<title>Воздушный шарик</title>
+<!-- Нить начинается точно под узелком -->
+<path d="M 150 316 C 154 352, 129 372, 144 397 S 171 437, 154 459" fill="none" stroke="#302b2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.6"/>
+<!-- Основная форма шарика: контур построен кривыми Безье -->
+<path d="M 150 32            C 94 32, 54 77, 52 139            C 49 202, 82 255, 118 281            C 130 290, 139 296, 150 302            C 161 296, 171 290, 183 281            C 218 254, 251 202, 248 139            C 246 77, 207 32, 150 32 Z" fill="#FFE07C" stroke="#302b2c" stroke-linejoin="round" stroke-width="4.5"/>
+<!-- Два аккуратных бликa — тоже векторные -->
+<path d="M 91 95 C 107 68, 128 56, 148 54" fill="none" opacity=".82" stroke="#FFF5CB" stroke-linecap="round" stroke-width="12"/>
+<path d="M 77 122 C 75 132, 73 143, 74 151" fill="none" opacity=".7" stroke="#FFF5CB" stroke-linecap="round" stroke-width="7"/>
+<!-- Узелок намеренно касается основания шарика -->
+<path d="M 150 300 C 143 300, 136 311, 131 320            Q 150 315, 169 320            C 164 311, 157 300, 150 300 Z" fill="#F5C859" stroke="#302b2c" stroke-linejoin="round" stroke-width="4"/>
+<path d="M 138 313 Q 150 307, 162 313" fill="none" stroke="#FFF0B6" stroke-linecap="round" stroke-width="3"/>
+</svg></button>
+<button aria-label="Лопнуть фиолетовый шарик" class="balloon four" data-burst-color="#B999F5" type="button"><svg aria-hidden="true" class="balloon-svg" viewBox="0 0 300 470" xmlns="http://www.w3.org/2000/svg">
+<title>Воздушный шарик</title>
+<!-- Нить начинается точно под узелком -->
+<path d="M 150 316 C 154 352, 129 372, 144 397 S 171 437, 154 459" fill="none" stroke="#302b2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.6"/>
+<!-- Основная форма шарика: контур построен кривыми Безье -->
+<path d="M 150 32            C 94 32, 54 77, 52 139            C 49 202, 82 255, 118 281            C 130 290, 139 296, 150 302            C 161 296, 171 290, 183 281            C 218 254, 251 202, 248 139            C 246 77, 207 32, 150 32 Z" fill="#B999F5" stroke="#302b2c" stroke-linejoin="round" stroke-width="4.5"/>
+<!-- Два аккуратных бликa — тоже векторные -->
+<path d="M 91 95 C 107 68, 128 56, 148 54" fill="none" opacity=".82" stroke="#EFE5FF" stroke-linecap="round" stroke-width="12"/>
+<path d="M 77 122 C 75 132, 73 143, 74 151" fill="none" opacity=".7" stroke="#EFE5FF" stroke-linecap="round" stroke-width="7"/>
+<!-- Узелок намеренно касается основания шарика -->
+<path d="M 150 300 C 143 300, 136 311, 131 320            Q 150 315, 169 320            C 164 311, 157 300, 150 300 Z" fill="#9E80E9" stroke="#302b2c" stroke-linejoin="round" stroke-width="4"/>
+<path d="M 138 313 Q 150 307, 162 313" fill="none" stroke="#DED0FF" stroke-linecap="round" stroke-width="3"/>
+</svg></button>
+<button aria-label="Лопнуть голубой шарик" class="balloon five" data-burst-color="#94D5F5" type="button"><svg aria-hidden="true" class="balloon-svg" viewBox="0 0 300 470" xmlns="http://www.w3.org/2000/svg">
+<title>Воздушный шарик</title>
+<!-- Нить начинается точно под узелком -->
+<path d="M 150 316 C 154 352, 129 372, 144 397 S 171 437, 154 459" fill="none" stroke="#302b2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.6"/>
+<!-- Основная форма шарика: контур построен кривыми Безье -->
+<path d="M 150 32            C 94 32, 54 77, 52 139            C 49 202, 82 255, 118 281            C 130 290, 139 296, 150 302            C 161 296, 171 290, 183 281            C 218 254, 251 202, 248 139            C 246 77, 207 32, 150 32 Z" fill="#94D5F5" stroke="#302b2c" stroke-linejoin="round" stroke-width="4.5"/>
+<!-- Два аккуратных бликa — тоже векторные -->
+<path d="M 91 95 C 107 68, 128 56, 148 54" fill="none" opacity=".82" stroke="#E7F7FF" stroke-linecap="round" stroke-width="12"/>
+<path d="M 77 122 C 75 132, 73 143, 74 151" fill="none" opacity=".7" stroke="#E7F7FF" stroke-linecap="round" stroke-width="7"/>
+<!-- Узелок намеренно касается основания шарика -->
+<path d="M 150 300 C 143 300, 136 311, 131 320            Q 150 315, 169 320            C 164 311, 157 300, 150 300 Z" fill="#71BFE6" stroke="#302b2c" stroke-linejoin="round" stroke-width="4"/>
+<path d="M 138 313 Q 150 307, 162 313" fill="none" stroke="#D0F0FC" stroke-linecap="round" stroke-width="3"/>
+</svg></button>
+<button aria-label="Лопнуть оранжевый шарик" class="balloon six" data-burst-color="#FFAE82" type="button"><svg aria-hidden="true" class="balloon-svg" viewBox="0 0 300 470" xmlns="http://www.w3.org/2000/svg">
+<title>Воздушный шарик</title>
+<!-- Нить начинается точно под узелком -->
+<path d="M 150 316 C 154 352, 129 372, 144 397 S 171 437, 154 459" fill="none" stroke="#302b2c" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.6"/>
+<!-- Основная форма шарика: контур построен кривыми Безье -->
+<path d="M 150 32            C 94 32, 54 77, 52 139            C 49 202, 82 255, 118 281            C 130 290, 139 296, 150 302            C 161 296, 171 290, 183 281            C 218 254, 251 202, 248 139            C 246 77, 207 32, 150 32 Z" fill="#FFAE82" stroke="#302b2c" stroke-linejoin="round" stroke-width="4.5"/>
+<!-- Два аккуратных бликa — тоже векторные -->
+<path d="M 91 95 C 107 68, 128 56, 148 54" fill="none" opacity=".82" stroke="#FFE9D8" stroke-linecap="round" stroke-width="12"/>
+<path d="M 77 122 C 75 132, 73 143, 74 151" fill="none" opacity=".7" stroke="#FFE9D8" stroke-linecap="round" stroke-width="7"/>
+<!-- Узелок намеренно касается основания шарика -->
+<path d="M 150 300 C 143 300, 136 311, 131 320            Q 150 315, 169 320            C 164 311, 157 300, 150 300 Z" fill="#F28B65" stroke="#302b2c" stroke-linejoin="round" stroke-width="4"/>
+<path d="M 138 313 Q 150 307, 162 313" fill="none" stroke="#FFD7C0" stroke-linecap="round" stroke-width="3"/>
+</svg></button>
+</div>
+<div aria-live="polite" class="balloon-count" id="balloonCount">🎈 Лопни все шарики · 0 из 6</div>
+</section>
+<section aria-labelledby="giftTitle" class="content hidden" id="gift">
+<div class="section-header"><span class="section-kicker">Подарок ✷</span><h2 id="giftTitle">Мы идём на тафтинг! 🧶</h2></div>
+<div class="certificate-wrap">
+<article aria-label="Подарочный сертификат на мастер-класс по созданию ковриков для двоих" class="ticket">
+<div class="ticket-art">
+<div class="ticket-rug">
+<svg aria-label="Круглый пушистый коврик с зелёной лягушечкой" class="ticket-rug-svg" role="img" viewBox="0 0 390 390" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<radialGradient cx="44%" cy="38%" id="rug-soft" r="70%"><stop offset="0" stop-color="#fce4f0"/><stop offset=".70" stop-color="#f7b5d8"/><stop offset="1" stop-color="#e895c4"/></radialGradient>
+<pattern height="16" id="rug-stitches" patternUnits="userSpaceOnUse" width="16"><path d="M3 6l4 4 M12 2l-3 5" fill="none" stroke="#fff2" stroke-linecap="round" stroke-width="2.5"/></pattern>
+</defs>
+<circle cx="195" cy="194" fill="#ead5ff" r="181" stroke="#33252c" stroke-width="8"/>
+<circle cx="195" cy="194" fill="url(#rug-soft)" r="168" stroke="#fff0fb" stroke-dasharray="5 13" stroke-linecap="round" stroke-width="9"/>
+<circle cx="195" cy="194" fill="url(#rug-stitches)" r="160"/>
+<g fill="#fff5c3" stroke="#453032" stroke-width="3"><circle cx="74" cy="97" r="14"/><circle cx="316" cy="283" r="12"/></g>
+<g stroke="#483036" stroke-linejoin="round" stroke-width="3"><path d="M79 273 Q58 256 51 286 Q35 278 36 306 Q52 325 75 314 Q93 334 107 312 Q108 284 88 287Z" fill="#fff7ca"/><circle cx="73" cy="296" fill="#f9b3d1" r="11"/>
+<path d="M313 105 Q302 79 281 95 Q272 71 253 87 Q241 116 262 125 Q263 147 288 137 Q306 137 313 105Z" fill="#ffeb8f"/><circle cx="282" cy="111" fill="#f8a2c9" r="11"/></g>
+<g fill="none" stroke="#7ba85d" stroke-linecap="round" stroke-width="5"><path d="M91 247q-15-21-13-33"/><path d="M301 242q14-13 14-30"/></g>
+<svg aria-hidden="true" aria-labelledby="ticket-title ticket-desc" height="298" viewBox="0 0 300 262" width="342" x="24" xmlns="http://www.w3.org/2000/svg" y="45">
+<title id="ticket-title">Зелёная лягушечка в сером колпаке</title>
+<desc id="ticket-desc">Зелёная лягушечка с жёлтыми глазами со звёздочками, розовыми щеками и двумя серыми пуговицами на колпаке.</desc>
+<defs>
+<linearGradient gradientUnits="objectBoundingBox" id="ticket-frogGreen" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0" stop-color="#9bbe4b"/>
+<stop offset="0.83" stop-color="#9bbe4b"/>
+<stop offset="1" stop-color="#9cbe4b"/>
+</linearGradient>
+<linearGradient id="ticket-eyeYellow" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0" stop-color="#f9e372"/>
+<stop offset="1" stop-color="#f9e372"/>
+</linearGradient>
+</defs>
+<!-- Background -->
+
+<g>
+<!-- Gray pointy hat, behind the frog -->
+<path d="M108.4 115.4 C118 91.1 132 58.7 144.9 27.1 C150.4 13.5 155.5 11.0 160.8 20.7 C176.8 51.6 189.6 80.9 203.4 111.9 L184.8 137 L130.0 137 Z" fill="#e5e5e5" stroke="#2f302e" stroke-linejoin="round" stroke-width="2.8"/>
+<!-- Soft white highlight on the right side of hat -->
+<!-- Hat buttons -->
+<circle cx="155.2" cy="71.2" fill="#5f5f5f" r="7.9" stroke="#292929" stroke-width="2.7"/>
+<circle cx="157.1" cy="102.7" fill="#5f5f5f" r="9.3" stroke="#292929" stroke-width="2.8"/>
+<!-- Frog body silhouette -->
+<path d="M103.5 110.3       C120.0 110.2 132.8 119.1 141.0 133.8       C148.1 130.9 158.1 131.0 165.3 133.6       C173.0 118.8 187.1 110.2 202.4 109.9       C227.4 107.6 244.4 124.5 244.2 145.8       C244.1 151.7 242.1 158.7 244.0 163.5       C255.8 171.3 260.5 183.5 259.5 199.3       C257.8 222.9 235.1 239.9 201.0 244.3       C163.5 249.4 117.3 247.9 100.9 245.1       C68.9 240.5 51.3 224.9 48.9 202.1       C46.6 185.1 54.0 171.0 66.9 161.6       C64.5 154.6 63.8 145.6 66.6 137.1       C72.2 119.2 86.2 110.5 103.5 110.3 Z" fill="url(#ticket-frogGreen)" id="ticket-frogBody" stroke="#292c26" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.0"/>
+<!-- Soft green reflection across the lower edge -->
+<!-- Pink cheeks -->
+<path d="M76 172.5 C89 172.5 99.5 184.3 99.5 196.7 C99.5 210.2 89.5 220.6 76 220.6 C62 220.7 51.2 210.2 51.2 197.0 C51.1 182.4 61.5 172.5 76 172.5 Z" fill="#ecb0c3"/>
+<path d="M232.2 172.2 C246.1 172.2 256.8 183.4 256.8 196.6 C256.8 209.9 246.3 220.4 232.3 220.4 C218.4 220.4 207.7 209.9 207.7 196.7 C207.7 183 218.0 172.2 232.2 172.2 Z" fill="#ecb0c3"/>
+<!-- Tiny pale cheek glints -->
+<!-- Left eye -->
+<path d="M98.8 109.8 C83.6 109.7 70.5 119.0 66.1 132.4 C59.9 150.1 70.3 164.8 82.9 169.1 C96.0 173.4 113.5 170.3 123.7 159.0 C133.1 147.7 131.4 132.3 124.4 121.2 C118.0 113.4 108.9 109.4 98.8 109.8 Z" fill="#f9e372" stroke="#2d3025" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.2"/>
+<!-- Right eye -->
+<path d="M210.3 109.6 C193.7 108.8 183.3 118.8 178.6 132.5 C172.5 150.0 183.8 163.3 197.4 167.7 C212.3 172.5 226.9 167.4 236.1 157.8 C245.4 147.2 245.2 133.1 238.4 121.1 C232.0 111.0 220.9 109.2 210.3 109.6 Z" fill="#f9e372" stroke="#2d3025" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.2"/>
+<!-- Subtle eye highlights -->
+<!-- Irregular four-point pupils, slightly softened like the source -->
+<path d="M97.2 121.9 C99.6 121.8 101.5 127.6 101.6 132.9 C107.7 133.4 114.7 135.3 115.6 138.1 C115.4 140.6 107.7 142.1 101.7 142.3 C101.6 147.2 99.9 156.7 97.0 157.6 C94.0 156.5 93.2 148.3 92.6 142.3 C87.4 141.6 80.5 140.7 79.4 138.4 C79.4 135.6 87.5 134.2 92.9 133.7 C93.0 128.0 94.5 122.0 97.2 121.9 Z" fill="#000"/>
+<path d="M209.7 117.9 C212.1 118.0 213.8 125.1 214.1 131.7 C219.4 132.2 227.3 133.8 228.6 136.8 C228.4 139.3 221.0 140.7 214.2 141.1 C213.9 146.5 212.4 153.6 209.4 155.1 C206.5 153.1 205.4 145.4 205.0 140.9 C198.4 140.5 192.1 138.8 191.2 136.2 C192.8 133.5 200.0 132.3 205.1 131.6 C205.2 125.4 207.4 118.5 209.7 117.9 Z" fill="#000"/>
+<!-- Small nostrils -->
+<path d="M141.2 154.8 C142.1 152.2 144.8 151.7 147.6 151.5" fill="none" stroke="#303923" stroke-linecap="round" stroke-width="2.8"/>
+<path d="M159.7 151.7 C162.3 151.8 164.0 153.3 164.7 155.0" fill="none" stroke="#303923" stroke-linecap="round" stroke-width="2.8"/>
+<!-- Smile: slight arch in the centre, lower near the dimples -->
+<path d="M81.7 194.1 C99.2 198.0 115.0 196.6 130.4 191.6 C147.4 185.8 161.6 187.6 176.8 191.2 C197.5 197.1 217.3 198.9 232.9 191.1" fill="none" stroke="#323b23" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.7"/>
+<path d="M79.9 198.0 C81.8 194.7 83.0 190.0 82.8 190.7 M233.6 188.0 C233.5 191.5 235.2 194.7 236.1 196.1" fill="none" stroke="#323b23" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+</g>
+</svg></svg>
+</div>
+</div>
+<div class="ticket-info">
+<div class="ticket-stamp">Для тебя ✳</div>
+<h3>Подарочный <span class="pink">сертификат</span></h3>
+<div class="meta"><div class="meta-item"><div class="small">Формат</div><div class="value">Для двоих · в группе</div></div><div class="meta-item"><div class="small">Срок действия</div><div class="value">3 месяца</div></div></div>
+<div class="serial-box"><div><div class="small">Телефон для записи</div><a class="serial" href="tel:+79100013434" id="serial">+7 910 001-34-34</a></div><button class="copy-btn" id="copyButton" title="Скопировать телефон" type="button">Скопировать ⧉</button></div>
+</div>
+</article>
+</div>
+<section aria-labelledby="activityTitle" class="mini-activity">
+<div class="activity-copy"><span class="section-kicker">мини-мастерская</span><h2 id="activityTitle">А какой коврик сделаешь ты?</h2></div>
+<div class="paint-card"><div class="paint-title"><span>Мой будущий коврик</span><span class="stars">✳ ✦</span></div><div class="rug-frame"><div aria-label="Интерактивный коврик для рисования по клеточкам" class="pixel-rug" id="pixelRug" role="group"></div></div><div class="palette-row"><div aria-label="Выбрать цвет пряжи" class="palette" id="palette"></div><div class="paint-tools"><button class="tool-btn" id="resetRug" title="Новый узор" type="button">↻ Новый</button><button class="tool-btn" id="saveRug" title="Сохранить рисунок на компьютер" type="button">↓ Сохранить</button></div></div></div>
+</section>
+</section>
+</main>
+<div aria-live="polite" class="pop-message" id="toast" role="status"></div>
+<script>
+    (() => {
+      'use strict';
+      const $ = (id) => document.getElementById(id);
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const colors = ['#ffdf6b','#ff88be','#99d94f','#af8afa','#8ad6f5','#fff7e5'];
+      let revealed = false, popped = 0, toastTimeout;
+      const gift = $('gift');
+      const balloons = [...document.querySelectorAll('.balloon')];
+      function toast(message) {
+        const el = $('toast'); el.textContent = message; el.classList.add('show');
+        clearTimeout(toastTimeout); toastTimeout = setTimeout(() => el.classList.remove('show'), 2600);
+      }
+      function burst(x,y,amount=32) {
+        if (reducedMotion) return;
+        for(let i=0;i<amount;i++) {
+          const bit=document.createElement('i'); bit.className='confetti';
+          bit.style.background=colors[Math.floor(Math.random()*5)]; bit.style.borderRadius=Math.random()>.58?'50%':'2px';
+          bit.style.left=x+'px';bit.style.top=y+'px';
+          const a=(Math.PI*2*i/amount)+(Math.random()-.5)*.7;
+          const r=65+Math.random()*195;
+          bit.style.setProperty('--dx',Math.cos(a)*r+'px');
+          bit.style.setProperty('--dy',(Math.sin(a)*r+80)+'px');
+          bit.style.setProperty('--spin',(Math.random()*1100-550)+'deg');
+          bit.style.setProperty('--t',(680+Math.random()*650)+'ms');
+          document.body.appendChild(bit);
+          bit.addEventListener('animationend',()=>bit.remove(),{once:true});
+        }
+      }
+
+      function bigBalloonBurst(x,y,mainColor) {
+        if (reducedMotion) return;
+        const blast=document.createElement('div');blast.className='pop-burst';
+        blast.style.left=x+'px';blast.style.top=y+'px';
+        blast.style.setProperty('--pop-color',mainColor);
+        blast.innerHTML='<span class="pop-ring"></span><span class="pop-flash"></span>';
+        const popColors=[mainColor,'#fff3af','#ff76ad','#c8afff','#9fe8f6','#ffffff'];
+        const count=32;
+        for(let i=0;i<count;i++) {
+          const frag=document.createElement('i');frag.className=i%4===0?'pop-spark':'pop-shard';
+          const theta=Math.PI*2*i/count+(Math.random()-.5)*.19;
+          const radius=118+Math.random()*178;
+          frag.style.setProperty('--piece',popColors[Math.floor(Math.random()*popColors.length)]);
+          frag.style.setProperty('--dx',(Math.cos(theta)*radius)+'px');
+          frag.style.setProperty('--dy',(Math.sin(theta)*radius+28)+'px');
+          frag.style.setProperty('--spin',(Math.random()*1200-600)+'deg');
+          frag.style.setProperty('--speed',(550+Math.random()*550)+'ms');
+          frag.style.setProperty('--w',(8+Math.random()*12)+'px');
+          frag.style.setProperty('--h',(12+Math.random()*15)+'px');
+          blast.appendChild(frag);
+        }
+        document.body.appendChild(blast);
+        setTimeout(()=>blast.remove(),1200);
+        burst(x,y,30);
+      }
+      function reveal() {
+        if (popped !== balloons.length) return;
+        $('toast').classList.remove('show');
+        if (!revealed) {
+          revealed=true;gift.classList.remove('hidden');gift.classList.add('is-revealed');
+          $('revealButton').innerHTML='Смотреть сертификат <span class="arrow">↓</span>';
+          const r=$('revealButton').getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,66);
+        }
+        setTimeout(() => gift.scrollIntoView({behavior:reducedMotion?'instant':'smooth',block:'start'}), 200);
+      }
+      $('revealButton').addEventListener('click', reveal);
+      const frog=$('frogButton');
+      frog.addEventListener('click', () => {
+        frog.classList.remove('boing'); void frog.offsetWidth; frog.classList.add('boing');
+        const r=frog.getBoundingClientRect();
+        if (!reducedMotion) for(let i=0;i<7;i++) {
+          const h=document.createElement('span');h.className='heart-particle';h.textContent=i%2?'♥':'✦';h.style.color=colors[i%5];
+          h.style.left=r.left+r.width*(.3+Math.random()*.4)+'px';h.style.top=r.top+r.height*.57+'px';
+          h.style.setProperty('--hx',(Math.random()-.5)*240+'px');h.style.setProperty('--hr',(Math.random()*100-50)+'deg');
+          document.body.appendChild(h);h.addEventListener('animationend',()=>h.remove(),{once:true});
+        }
+
+      });
+      balloons.forEach((balloon) => balloon.addEventListener('click', () => {
+        if(balloon.classList.contains('pop')) return;
+        const rect=balloon.getBoundingClientRect(); balloon.classList.add('pop');popped++;
+        bigBalloonBurst(rect.left+rect.width/2,rect.top+rect.height*.36,balloon.dataset.burstColor||'#F6A3C7');
+        $('balloonCount').textContent=`🎈 Лопни все шарики · ${popped} из ${balloons.length}`;
+        if(popped===balloons.length) {
+          $('balloonCount').textContent='✦ 6 из 6';
+          const cta=$('revealButton'); cta.hidden=false; cta.classList.add('ready');
+          toast('Лопнули все шарики!');
+          const r=cta.getBoundingClientRect(); burst(r.left+r.width/2,r.top+r.height/2,38);
+        }
+      }));
+      $('copyButton').addEventListener('click', async () => {
+        const value=$('serial').textContent.trim();
+        try {
+          if(navigator.clipboard?.writeText && window.isSecureContext) await navigator.clipboard.writeText(value);
+          else {
+            const input=document.createElement('textarea');input.value=value;input.style.position='fixed';input.style.opacity='0';document.body.appendChild(input);input.select();
+            const success=document.execCommand('copy');input.remove(); if(!success) throw new Error('copy failed');
+          }
+          toast('Телефон скопирован! ♥');$('copyButton').textContent='Готово ✓';setTimeout(()=>{$('copyButton').textContent='Скопировать ⧉'},2200);
+        } catch(e) {toast('Телефон: '+value)}
+      });
+
+      // 13×13 interactive tufted pixel-rug: entirely client-side and offline.
+      const size=13, grid=$('pixelRug'),palette=$('palette');
+      const pixels=[], cells=[];
+      const initialHeart = [
+        '.............','...PP...PP...','..PPPP.PPPP..','.PPPPPPPPPPP.','.PPPPPPPPPPP.','.PPPPPPPPPPP.',
+        '..PPPPPPPPP..','...PPPPPPP...','....PPPPP....','.....PPP.....','......P......','.............','.............'
+      ];
+      const flower = [
+        '.............','.....YY......','....YPYY.....','...YPPPYY....','...PPPPPY....',
+        '.YYYPYPYY....','.YPPGPGPY....','...YGPGYY....','.....G.......','.....G.......',
+        '....GGG......','.....G.......','.............'
+      ];
+      let selected=1, drawing=false, pattern=0;
+      function loadPattern(data) {
+        for(let i=0;i<size*size;i++) {
+          const char=data[Math.floor(i/size)]?.[i%size]||'.';
+          const index=char==='P'?1:char==='G'?2:char==='Y'?0:5;
+          pixels[i]=index;cells[i].style.setProperty('--px',colors[index]);
+        }
+      }
+      function paint(index) { if(index<0||index>=pixels.length)return;pixels[index]=selected;cells[index].style.setProperty('--px',colors[selected]); }
+      for(let i=0;i<size*size;i++) {
+        const cell=document.createElement('div'); cell.className='px'; cell.dataset.i=String(i);
+        cell.style.setProperty('--px',colors[5]); grid.appendChild(cell);cells.push(cell);
+      }
+      function onPoint(ev) {
+        const target=document.elementFromPoint(ev.clientX,ev.clientY)?.closest('.px');
+        if(target && grid.contains(target)) paint(Number(target.dataset.i));
+      }
+      grid.addEventListener('pointerdown',(ev)=>{if(ev.button!==0 && ev.pointerType==='mouse')return;drawing=true;onPoint(ev);grid.setPointerCapture?.(ev.pointerId)});
+      grid.addEventListener('pointermove',(ev)=>{if(drawing)onPoint(ev)});
+      window.addEventListener('pointerup',()=>{drawing=false});
+      grid.addEventListener('pointercancel',()=>{drawing=false});
+      colors.forEach((c,i)=>{
+        const btn=document.createElement('button');btn.type='button';btn.className='swatch'+(i===selected?' active':'');
+        btn.style.setProperty('--swatch',c);btn.setAttribute('aria-label',`Цвет ${['жёлтый','розовый','зелёный','сиреневый','голубой','кремовый'][i]}`);
+        btn.setAttribute('aria-pressed',String(i===selected));
+        btn.addEventListener('click',()=>{selected=i;for(const el of palette.children){el.classList.remove('active');el.setAttribute('aria-pressed','false')}btn.classList.add('active');btn.setAttribute('aria-pressed','true')});
+        palette.appendChild(btn);
+      });
+      loadPattern(initialHeart);
+      $('resetRug').addEventListener('click',()=>{pattern=(pattern+1)%3;if(pattern===0)loadPattern(initialHeart);else if(pattern===1)loadPattern(flower);else loadPattern(Array.from({length:13},()=>'.'.repeat(13)));toast('Новый холст готов! 🧶')});
+      $('saveRug').addEventListener('click',()=>{
+        const canvas=document.createElement('canvas');canvas.width=650;canvas.height=650;
+        const ctx=canvas.getContext('2d');if(!ctx){toast('Не удалось сохранить рисунок');return}
+        ctx.fillStyle='#f4d4aa';ctx.fillRect(0,0,650,650);
+        const padding=42,step=(650-2*padding)/size;
+        for(let y=0;y<size;y++)for(let x=0;x<size;x++) {
+          const n=y*size+x, xx=padding+x*step, yy=padding+y*step;
+          ctx.fillStyle=colors[pixels[n]];ctx.fillRect(xx,yy,step+.5,step+.5);
+          ctx.strokeStyle='rgba(87,57,47,.14)';ctx.lineWidth=1.5;
+          ctx.beginPath();ctx.moveTo(xx+step*.22,yy+step*.3);ctx.lineTo(xx+step*.45,yy+step*.63);ctx.moveTo(xx+step*.72,yy+step*.22);ctx.lineTo(xx+step*.6,yy+step*.49);ctx.stroke();
+        }
+        const a=document.createElement('a');a.href=canvas.toDataURL('image/png');a.download='moy-pushistyy-kovrik.png';document.body.appendChild(a);a.click();a.remove();toast('Эскиз сохранён! ♥');
+      });
+    })();
+  </script>
+</body>
+</html>
